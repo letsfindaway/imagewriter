@@ -113,7 +113,9 @@ PlatformUdisks2::getBlockDeviceProperties(const QString &blockDevice)
     QDBusObjectPath objectPath = qvariant_cast<QDBusObjectPath>(remoteApp.property("Drive"));
     QString path = objectPath.path();
     properties.insert("drivePath", path);
-    properties.insert("path", QString(remoteApp.property("Device").toByteArray()));
+    QString device = remoteApp.property("Device").toByteArray();
+    device.remove('\0');
+    properties.insert("path", device);
     properties.insert("size", remoteApp.property("Size"));
     return properties;
 }
